@@ -16,7 +16,7 @@ namespace EZNEW.Develop.Domain.Repository
     /// <typeparam name="TSecondRelationModel">The second relation model</typeparam>
     /// <typeparam name="TEntity">Entity</typeparam>
     /// <typeparam name="TDataAccess">Data access</typeparam>
-    public abstract class DefaultAggregationRelationRepository<TModel, TFirstRelationModel, TSecondRelationModel, TEntity, TDataAccess> : BaseAggregationRelationRepository<TModel, TFirstRelationModel, TSecondRelationModel, TEntity, TDataAccess> where TModel : IAggregationRoot<TModel> where TSecondRelationModel : IAggregationRoot<TSecondRelationModel> where TFirstRelationModel : IAggregationRoot<TFirstRelationModel> where TEntity : BaseEntity<TEntity>, new() where TDataAccess : IDataAccess<TEntity>
+    public abstract class DefaultAggregationRelationRepository<TModel, TFirstRelationModel, TSecondRelationModel, TEntity, TDataAccess> : BaseAggregationRelationRepository<TModel, TFirstRelationModel, TSecondRelationModel, TEntity, TDataAccess> where TModel : AggregationRoot<TModel> where TSecondRelationModel : IAggregationRoot<TSecondRelationModel> where TFirstRelationModel : IAggregationRoot<TFirstRelationModel> where TEntity : BaseEntity<TEntity>, new() where TDataAccess : IDataAccess<TEntity>
     {
         #region Query
 
@@ -78,52 +78,52 @@ namespace EZNEW.Develop.Domain.Repository
         /// Remove by first datas
         /// </summary>
         /// <param name="datas">Datas</param>
-        /// <param name="activationOption">Activation option</param>
-        public sealed override void RemoveByFirst(IEnumerable<TFirstRelationModel> datas, ActivationOption activationOption = null)
+        /// <param name="activationOptions">Activation options</param>
+        public sealed override void RemoveByFirst(IEnumerable<TFirstRelationModel> datas, ActivationOptions activationOptions = null)
         {
             if (datas.IsNullOrEmpty())
             {
                 return;
             }
             IQuery query = CreateQueryByFirst(datas);
-            Remove(query, activationOption);
+            Remove(query, activationOptions);
         }
 
         /// <summary>
         /// Remove by second datas
         /// </summary>
         /// <param name="datas">Datas</param>
-        /// <param name="activationOption">Activation option</param>
-        public sealed override void RemoveBySecond(IEnumerable<TSecondRelationModel> datas, ActivationOption activationOption = null)
+        /// <param name="activationOptions">Activation options</param>
+        public sealed override void RemoveBySecond(IEnumerable<TSecondRelationModel> datas, ActivationOptions activationOptions = null)
         {
             if (datas.IsNullOrEmpty())
             {
                 return;
             }
             IQuery query = CreateQueryBySecond(datas);
-            Remove(query, activationOption);
+            Remove(query, activationOptions);
         }
 
         /// <summary>
         /// Remove by first
         /// </summary>
         /// <param name="query">Query object</param>
-        /// <param name="activationOption">Activation option</param>
-        public sealed override void RemoveByFirst(IQuery query, ActivationOption activationOption = null)
+        /// <param name="activationOptions">Activation options</param>
+        public sealed override void RemoveByFirst(IQuery query, ActivationOptions activationOptions = null)
         {
             var removeQuery = CreateQueryByFirst(query);
-            Remove(removeQuery, activationOption);
+            Remove(removeQuery, activationOptions);
         }
 
         /// <summary>
         /// Remove by first
         /// </summary>
         /// <param name="query">Query object</param>
-        /// <param name="activationOption">Activation option</param>
-        public sealed override void RemoveBySecond(IQuery query, ActivationOption activationOption = null)
+        /// <param name="activationOptions">Activation options</param>
+        public sealed override void RemoveBySecond(IQuery query, ActivationOptions activationOptions = null)
         {
             var removeQuery = CreateQueryBySecond(query);
-            Remove(removeQuery, activationOption);
+            Remove(removeQuery, activationOptions);
         }
 
         #endregion

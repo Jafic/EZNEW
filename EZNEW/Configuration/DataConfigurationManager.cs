@@ -41,9 +41,9 @@ namespace EZNEW.Configuration
             static readonly Dictionary<DatabaseServerType, IQueryTranslator> DatabaseServerQueryTranslators = new Dictionary<DatabaseServerType, IQueryTranslator>();
 
             /// <summary>
-            /// Gets the database engines
+            /// Gets the database providers
             /// </summary>
-            static Dictionary<DatabaseServerType, IDatabaseEngine> DatabaseEngines { get; } = new Dictionary<DatabaseServerType, IDatabaseEngine>();
+            static Dictionary<DatabaseServerType, IDatabaseProvider> DatabaseProviders { get; } = new Dictionary<DatabaseServerType, IDatabaseProvider>();
 
             /// <summary>
             /// servertype&entity object name
@@ -110,7 +110,7 @@ namespace EZNEW.Configuration
             /// <summary>
             /// criteria convert parse config
             /// </summary>
-            static readonly Dictionary<string, Func<CriteriaConverterParseOption, string>> CriteriaConverterParsers = new Dictionary<string, Func<CriteriaConverterParseOption, string>>();
+            static readonly Dictionary<string, Func<CriteriaConverterParseOptions, string>> CriteriaConverterParsers = new Dictionary<string, Func<CriteriaConverterParseOptions, string>>();
 
             #endregion
 
@@ -187,32 +187,32 @@ namespace EZNEW.Configuration
 
             #endregion
 
-            #region Database engine
+            #region Database provider
 
             /// <summary>
-            /// Configure database engine
+            /// Configure database provider
             /// </summary>
             /// <param name="serverType">Database server type</param>
-            /// <param name="databaseEngine">Database engine</param>
-            internal static void ConfigureDatabaseEngine(DatabaseServerType serverType, IDatabaseEngine databaseEngine)
+            /// <param name="databaseProvider">Database provider</param>
+            internal static void ConfigureDatabaseProvider(DatabaseServerType serverType, IDatabaseProvider databaseProvider)
             {
-                if (databaseEngine == null)
+                if (databaseProvider == null)
                 {
                     return;
                 }
-                DatabaseEngines[serverType] = databaseEngine;
+                DatabaseProviders[serverType] = databaseProvider;
                 InitDatabaseAllEntityConfiguration(serverType);
             }
 
             /// <summary>
-            /// Get database engine
+            /// Get database provider
             /// </summary>
             /// <param name="serverType">Database server type</param>
-            /// <returns>Return database engine</returns>
-            internal static IDatabaseEngine GetDatabaseEngine(DatabaseServerType serverType)
+            /// <returns>Return database provider</returns>
+            internal static IDatabaseProvider GetDatabaseProvider(DatabaseServerType serverType)
             {
-                DatabaseEngines.TryGetValue(serverType, out var databaseEngine);
-                return databaseEngine;
+                DatabaseProviders.TryGetValue(serverType, out var databaseProvider);
+                return databaseProvider;
             }
 
             /// <summary>
@@ -590,7 +590,7 @@ namespace EZNEW.Configuration
             /// </summary>
             /// <param name="converterConfigName">Converter config name</param>
             /// <param name="converterParseOperation">Converter parse operation</param>
-            internal static void ConfigureCriteriaConverterParser(string converterConfigName, Func<CriteriaConverterParseOption, string> converterParseOperation)
+            internal static void ConfigureCriteriaConverterParser(string converterConfigName, Func<CriteriaConverterParseOptions, string> converterParseOperation)
             {
                 if (string.IsNullOrWhiteSpace(converterConfigName) || converterParseOperation == null)
                 {
@@ -604,7 +604,7 @@ namespace EZNEW.Configuration
             /// </summary>
             /// <param name="converterConfigName">Converter config name</param>
             /// <returns>Return convert parse operation</returns>
-            internal static Func<CriteriaConverterParseOption, string> GetCriteriaConverterParser(string converterConfigName)
+            internal static Func<CriteriaConverterParseOptions, string> GetCriteriaConverterParser(string converterConfigName)
             {
                 CriteriaConverterParsers.TryGetValue(converterConfigName, out var parse);
                 return parse;

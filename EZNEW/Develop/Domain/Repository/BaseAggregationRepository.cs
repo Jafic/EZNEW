@@ -6,6 +6,7 @@ using EZNEW.Develop.Domain.Aggregation;
 using EZNEW.Develop.Domain.Repository.Warehouse;
 using EZNEW.Develop.UnitOfWork;
 using EZNEW.Paging;
+using EZNEW.Response;
 
 namespace EZNEW.Develop.Domain.Repository
 {
@@ -20,15 +21,15 @@ namespace EZNEW.Develop.Domain.Repository
         /// Save data
         /// </summary>
         /// <param name="data">Data</param>
-        /// <param name="activationOption">Activation option</param>
-        public abstract void Save(TModel data, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        public abstract TModel Save(TModel data, ActivationOptions activationOptions = null);
 
         /// <summary>
         /// save datas
         /// </summary>
         /// <param name="datas">Datas</param>
-        /// <param name="activationOption">Activation option</param>
-        public abstract void Save(IEnumerable<TModel> datas, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        public abstract List<TModel> Save(IEnumerable<TModel> datas, ActivationOptions activationOptions = null);
 
         #endregion
 
@@ -38,15 +39,15 @@ namespace EZNEW.Develop.Domain.Repository
         /// Remove data
         /// </summary>
         /// <param name="data">Data</param>
-        /// <param name="activationOption">Activation option</param>
-        public abstract void Remove(TModel data, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        public abstract void Remove(TModel data, ActivationOptions activationOptions = null);
 
         /// <summary>
         /// Remove datas
         /// </summary>
         /// <param name="datas">Datas</param>
-        /// <param name="activationOption">Activation option</param>
-        public abstract void Remove(IEnumerable<TModel> datas, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        public abstract void Remove(IEnumerable<TModel> datas, ActivationOptions activationOptions = null);
 
         #endregion
 
@@ -56,8 +57,8 @@ namespace EZNEW.Develop.Domain.Repository
         /// Remove data by condition
         /// </summary>
         /// <param name="query">Query object</param>
-        /// <param name="activationOption">Activation option</param>
-        public abstract void Remove(IQuery query, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        public abstract void Remove(IQuery query, ActivationOptions activationOptions = null);
 
         #endregion
 
@@ -68,8 +69,8 @@ namespace EZNEW.Develop.Domain.Repository
         /// </summary>
         /// <param name="expression">Modify expression</param>
         /// <param name="query">Query object</param>
-        /// <param name="activationOption">Activation option</param>
-        public abstract void Modify(IModify expression, IQuery query, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        public abstract void Modify(IModify expression, IQuery query, ActivationOptions activationOptions = null);
 
         #endregion
 
@@ -83,11 +84,25 @@ namespace EZNEW.Develop.Domain.Repository
         public abstract TModel Get(IQuery query);
 
         /// <summary>
+        /// Get data by current data
+        /// </summary>
+        /// <param name="currentData">Current data</param>
+        /// <returns>Return data</returns>
+        public abstract TModel Get(TModel currentData);
+
+        /// <summary>
         /// Get data
         /// </summary>
         /// <param name="query">Query object</param>
         /// <returns>Return data</returns>
         public abstract Task<TModel> GetAsync(IQuery query);
+
+        /// <summary>
+        /// Get data by current data
+        /// </summary>
+        /// <param name="currentData">Current data</param>
+        /// <returns>Return data</returns>
+        public abstract Task<TModel> GetAsync(TModel currentData);
 
         #endregion
 

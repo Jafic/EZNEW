@@ -6,6 +6,7 @@ using EZNEW.Develop.UnitOfWork;
 using EZNEW.Develop.CQuery;
 using EZNEW.Paging;
 using EZNEW.Develop.Domain.Aggregation;
+using EZNEW.Response;
 
 namespace EZNEW.Develop.Domain.Repository
 {
@@ -21,15 +22,15 @@ namespace EZNEW.Develop.Domain.Repository
         /// Save data
         /// </summary>
         /// <param name="data">Data</param>
-        /// <param name="activationOption">Activation option</param>
-        void Save(TModel data, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        TModel Save(TModel data, ActivationOptions activationOptions = null);
 
         /// <summary>
         /// Save datas
         /// </summary>
         /// <param name="datas">Datas</param>
-        /// <param name="activationOption">Activation option</param>
-        void Save(IEnumerable<TModel> datas, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        List<TModel> Save(IEnumerable<TModel> datas, ActivationOptions activationOptions = null);
 
         #endregion
 
@@ -39,15 +40,15 @@ namespace EZNEW.Develop.Domain.Repository
         /// Remove data
         /// </summary>
         /// <param name="data">Data</param>
-        /// <param name="activationOption">Activation option</param>
-        void Remove(TModel data, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        void Remove(TModel data, ActivationOptions activationOptions = null);
 
         /// <summary>
         /// Remove datas
         /// </summary>
         /// <param name="datas">Datas</param>
-        /// <param name="activationOption">Activation option</param>
-        void Remove(IEnumerable<TModel> datas, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        void Remove(IEnumerable<TModel> datas, ActivationOptions activationOptions = null);
 
         #endregion
 
@@ -57,8 +58,8 @@ namespace EZNEW.Develop.Domain.Repository
         /// Remove data by condition
         /// </summary>
         /// <param name="query">Query object</param>
-        /// <param name="activationOption">Activation option</param>
-        void Remove(IQuery query, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        void Remove(IQuery query, ActivationOptions activationOptions = null);
 
         #endregion
 
@@ -69,8 +70,8 @@ namespace EZNEW.Develop.Domain.Repository
         /// </summary>
         /// <param name="expression">Modify expression</param>
         /// <param name="query">Query object</param>
-        /// <param name="activationOption">Activation option</param>
-        void Modify(IModify expression, IQuery query, ActivationOption activationOption = null);
+        /// <param name="activationOptions">Activation options</param>
+        void Modify(IModify expression, IQuery query, ActivationOptions activationOptions = null);
 
         #endregion
 
@@ -84,11 +85,25 @@ namespace EZNEW.Develop.Domain.Repository
         TModel Get(IQuery query);
 
         /// <summary>
+        /// Get data by current data
+        /// </summary>
+        /// <param name="data">Current data</param>
+        /// <returns>Return data</returns>
+        TModel Get(TModel data);
+
+        /// <summary>
         /// Get data
         /// </summary>
         /// <param name="query">Query object</param>
         /// <returns>Return data</returns>
         Task<TModel> GetAsync(IQuery query);
+
+        /// <summary>
+        /// Get data by current data
+        /// </summary>
+        /// <param name="data">Current data</param>
+        /// <returns>Return data</returns>
+        Task<TModel> GetAsync(TModel data);
 
         #endregion
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace EZNEW.Develop.Entity
 {
@@ -39,7 +37,7 @@ namespace EZNEW.Develop.Entity
         /// <summary>
         /// Gets or sets cache option
         /// </summary>
-        public EntityFieldCacheOption CacheOption { get; set; }
+        public FieldCacheRole CacheRole { get; set; }
 
         /// <summary>
         /// Gets or sets whether disable the field in query
@@ -85,6 +83,31 @@ namespace EZNEW.Develop.Entity
         /// Whether is required
         /// </summary>
         public bool IsRequired { get; set; }
+
+        /// <summary>
+        /// Whether is parent field
+        /// </summary>
+        public bool IsParent { get; set; }
+
+        /// <summary>
+        /// Whether is sort field
+        /// </summary>
+        public bool IsSort { get; set; }
+
+        /// <summary>
+        /// Whether is level field
+        /// </summary>
+        public bool IsLevel { get; set; }
+
+        /// <summary>
+        /// Whether is display name field
+        /// </summary>
+        public bool IsDisplayName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value provider
+        /// </summary>
+        internal IEntityPropertyValueProvider ValueProvider { get; set; }
 
         #endregion
 

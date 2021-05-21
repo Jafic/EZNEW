@@ -22,7 +22,7 @@ namespace EZNEW.Develop.CQuery
         /// <summary>
         /// Add query item handlers
         /// </summary>
-        internal static readonly Dictionary<Guid, Func<DefaultQuery, IQueryItem, QueryParameterOption, IQueryItem>> AddQueryItemHandlers = null;
+        internal static readonly Dictionary<Guid, Func<DefaultQuery, IQueryItem, QueryParameterOptions, IQueryItem>> AddQueryItemHandlers = null;
 
         /// <summary>
         /// Boolean type
@@ -55,7 +55,7 @@ namespace EZNEW.Develop.CQuery
 
         static QueryManager()
         {
-            AddQueryItemHandlers = new Dictionary<Guid, Func<DefaultQuery, IQueryItem, QueryParameterOption, IQueryItem>>(2)
+            AddQueryItemHandlers = new Dictionary<Guid, Func<DefaultQuery, IQueryItem, QueryParameterOptions, IQueryItem>>(2)
             {
                 { typeof(Criteria).GUID,AddCriteriaQueryItemHandler},
                 { typeof(DefaultQuery).GUID,AddQueryInfoQueryItemHandler}
@@ -176,7 +176,7 @@ namespace EZNEW.Develop.CQuery
             {
                 throw new EZNEWException(string.Format("Type:{0} isn't set primary keys", entityType.FullName));
             }
-            var firstData = datas.ElementAt(0).GetPropertyValue(keys.ElementAt(0));
+            var firstData = datas.ElementAt(0).GetValue(keys.ElementAt(0));
             var dataType = firstData.GetType();
             dynamic keyValueList = Activator.CreateInstance(typeof(List<>).MakeGenericType(dataType));
             var keyCount = keys.GetCount();
@@ -184,14 +184,14 @@ namespace EZNEW.Develop.CQuery
             {
                 if (keyCount == 1)
                 {
-                    keyValueList.Add(entity.GetPropertyValue(keys.ElementAt(0)));
+                    keyValueList.Add(entity.GetValue(keys.ElementAt(0)));
                 }
                 else
                 {
                     IQuery entityQuery = Create();
                     foreach (var key in keys)
                     {
-                        entityQuery = AndExtensions.And(entityQuery, key, exclude ? CriteriaOperator.NotEqual : CriteriaOperator.Equal, entity.GetPropertyValue(key));
+                        entityQuery = AndExtensions.And(entityQuery, key, exclude ? CriteriaOperator.NotEqual : CriteriaOperator.Equal, entity.GetValue(key));
                     }
                     originalQuery.Or(entityQuery);
                 }
@@ -235,7 +235,7 @@ namespace EZNEW.Develop.CQuery
             foreach (var key in keys)
             {
                 var criteriaOperator = exclude ? CriteriaOperator.NotEqual : CriteriaOperator.Equal;
-                originalQuery = AndExtensions.And(originalQuery, key, criteriaOperator, data.GetPropertyValue(key), null);
+                originalQuery = AndExtensions.And(originalQuery, key, criteriaOperator, data.GetValue(key), null);
             }
             return originalQuery;
         }
@@ -250,7 +250,7 @@ namespace EZNEW.Develop.CQuery
         /// <param name="originalQuery">Original query</param>
         /// <param name="queryItem">Parameter query item</param>
         /// <param name="parameterQueryOption">Parameter query option</param>
-        static IQueryItem AddCriteriaQueryItemHandler(DefaultQuery originalQuery, IQueryItem queryItem, QueryParameterOption parameterQueryOption)
+        static IQueryItem AddCriteriaQueryItemHandler(DefaultQuery originalQuery, IQueryItem queryItem, QueryParameterOptions parameterQueryOption)
         {
             if (originalQuery == null || queryItem == null)
             {
@@ -313,7 +313,7 @@ namespace EZNEW.Develop.CQuery
         /// <param name="originalQuery">Original query</param>
         /// <param name="queryItem">Parameter query item</param>
         /// <param name="parameterQueryOption">Parameter query option</param>
-        static IQueryItem AddQueryInfoQueryItemHandler(DefaultQuery originalQuery, IQueryItem queryItem, QueryParameterOption parameterQueryOption)
+        static IQueryItem AddQueryInfoQueryItemHandler(DefaultQuery originalQuery, IQueryItem queryItem, QueryParameterOptions parameterQueryOption)
         {
             if (originalQuery == null || queryItem == null)
             {
@@ -494,7 +494,7 @@ namespace EZNEW.Develop.CQuery
         /// <param name="parameterQuery">Parameter query</param>
         /// <param name="parameterQueryOption">Parameter query option</param>
         /// <returns>Return the newest query object</returns>
-        internal static TQuery HandleParameterQueryBeforeUse<TQuery>(TQuery parameterQuery, QueryParameterOption parameterQueryOption) where TQuery : IQuery
+        internal static TQuery HandleParameterQueryBeforeUse<TQuery>(TQuery parameterQuery, QueryParameterOptions parameterQueryOption) where TQuery : IQuery
         {
             if (parameterQuery == null)
             {

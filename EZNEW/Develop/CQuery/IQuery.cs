@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Collections;
 using System.Threading;
 using EZNEW.Paging;
 using EZNEW.Develop.CQuery.CriteriaConverter;
-using EZNEW.Develop.Entity;
 using EZNEW.Develop.DataAccess;
-using EZNEW.Data;
 
 namespace EZNEW.Develop.CQuery
 {
@@ -270,18 +267,18 @@ namespace EZNEW.Develop.CQuery
         #region Load Propertys
 
         /// <summary>
-        /// Set load data propertys
+        /// Set allow load data properties
         /// </summary>
-        /// <param name="propertys">Propertys</param>
-        void SetLoadPropertys(Dictionary<string, bool> propertys);
+        /// <param name="properties">Properties</param>
+        void SetLoadProperty(Dictionary<string, bool> properties);
 
         /// <summary>
-        /// Set load data propertys
+        /// Set allow load data properties
         /// </summary>
         /// <typeparam name="TQueryModel">Query model type</typeparam>
         /// <param name="allowLoad">Whether allow load data</param>
-        /// <param name="propertys">Propertys</param>
-        void SetLoadPropertys<TQueryModel>(bool allowLoad, params Expression<Func<TQueryModel, dynamic>>[] propertys);
+        /// <param name="properties">Properties</param>
+        void SetLoadProperty<TQueryModel>(bool allowLoad, params Expression<Func<TQueryModel, dynamic>>[] properties);
 
         /// <summary>
         /// Property is allow load data
@@ -501,7 +498,7 @@ namespace EZNEW.Develop.CQuery
         /// <param name="value">Value</param>
         /// <param name="converter">Converter</param>
         /// <param name="queryOption">query parameter option</param>
-        IQuery AddCriteria(QueryOperator queryOperator, string fieldName, CriteriaOperator criteriaOperator, dynamic value, ICriteriaConverter converter = null, QueryParameterOption queryOption = null);
+        IQuery AddCriteria(QueryOperator queryOperator, string fieldName, CriteriaOperator criteriaOperator, dynamic value, ICriteriaConverter converter = null, QueryParameterOptions queryOption = null);
 
         #endregion
 
@@ -513,7 +510,7 @@ namespace EZNEW.Develop.CQuery
         /// <param name="queryOperator">Connect operator</param>
         /// <param name="queryItem">query item</param>
         /// <param name="queryOption">query parameter option</param>
-        IQuery AddQueryItem(QueryOperator queryOperator, IQueryItem queryItem, QueryParameterOption queryOption = null);
+        IQuery AddQueryItem(QueryOperator queryOperator, IQueryItem queryItem, QueryParameterOptions queryOption = null);
 
         #endregion
 

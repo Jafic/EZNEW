@@ -27,7 +27,7 @@ namespace EZNEW.Data
     {
         static DataManager()
         {
-            ContainerManager.Container?.Register(typeof(ICommandEngine), typeof(DatabaseCommandEngine));
+            ContainerManager.Container?.Register(typeof(ICommandExecutor), typeof(DatabaseCommandExecutor));
             SqlMapper.Settings.ApplyNullValues = true;
         }
 
@@ -60,11 +60,11 @@ namespace EZNEW.Data
                 {
                     continue;
                 }
-                //register database engine
-                if (!string.IsNullOrWhiteSpace(serverItem.Value.EngineFullTypeName))
+                //register database provider
+                if (!string.IsNullOrWhiteSpace(serverItem.Value.DatabaseProviderFullTypeName))
                 {
-                    IDatabaseEngine engine = (IDatabaseEngine)Activator.CreateInstance(Type.GetType(serverItem.Value.EngineFullTypeName));
-                    ConfigureDatabaseEngine(serverItem.Key, engine);
+                    IDatabaseProvider provider = (IDatabaseProvider)Activator.CreateInstance(Type.GetType(serverItem.Value.DatabaseProviderFullTypeName));
+                    ConfigureDatabaseProvider(serverItem.Key, provider);
                 }
                 //configure entity
                 if (!serverItem.Value.EntityConfigurations.IsNullOrEmpty())
@@ -228,26 +228,26 @@ namespace EZNEW.Data
 
         #endregion
 
-        #region Database engine
+        #region Database provider
 
         /// <summary>
-        /// Configure database engine
+        /// Configure database provider
         /// </summary>
         /// <param name="serverType">Database server type</param>
-        /// <param name="databaseEngine">Database engine</param>
-        public static void ConfigureDatabaseEngine(DatabaseServerType serverType, IDatabaseEngine databaseEngine)
+        /// <param name="databaseProvider">Database provider</param>
+        public static void ConfigureDatabaseProvider(DatabaseServerType serverType, IDatabaseProvider databaseProvider)
         {
-            ConfigurationManager.Data.ConfigureDatabaseEngine(serverType, databaseEngine);
+            ConfigurationManager.Data.ConfigureDatabaseProvider(serverType, databaseProvider);
         }
 
         /// <summary>
-        /// Get database engine
+        /// Get database provider
         /// </summary>
         /// <param name="serverType">Database server type</param>
-        /// <returns>Return database engine</returns>
-        public static IDatabaseEngine GetDatabaseEngine(DatabaseServerType serverType)
+        /// <returns>Return database provider</returns>
+        public static IDatabaseProvider GetDatabaseProvider(DatabaseServerType serverType)
         {
-            return ConfigurationManager.Data.GetDatabaseEngine(serverType);
+            return ConfigurationManager.Data.GetDatabaseProvider(serverType);
         }
 
         #endregion
@@ -482,7 +482,7 @@ namespace EZNEW.Data
         /// </summary>
         /// <param name="converterConfigName">Converter config name</param>
         /// <param name="converterParseOperation">Converter parse operation</param>
-        public static void ConfigureCriteriaConverterParser(string converterConfigName, Func<CriteriaConverterParseOption, string> converterParseOperation)
+        public static void ConfigureCriteriaConverterParser(string converterConfigName, Func<CriteriaConverterParseOptions, string> converterParseOperation)
         {
             ConfigurationManager.Data.ConfigureCriteriaConverterParser(converterConfigName, converterParseOperation);
         }
@@ -492,7 +492,7 @@ namespace EZNEW.Data
         /// </summary>
         /// <param name="converterConfigName">Converter config name</param>
         /// <returns>Return convert parse operation</returns>
-        public static Func<CriteriaConverterParseOption, string> GetCriteriaConverterParser(string converterConfigName)
+        public static Func<CriteriaConverterParseOptions, string> GetCriteriaConverterParser(string converterConfigName)
         {
             return ConfigurationManager.Data.GetCriteriaConverterParser(converterConfigName);
         }

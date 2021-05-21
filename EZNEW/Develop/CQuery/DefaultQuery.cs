@@ -10,6 +10,8 @@ using EZNEW.Fault;
 using EZNEW.Develop.DataAccess;
 using EZNEW.Paging;
 using EZNEW.Develop.Entity;
+using EZNEW.Cache;
+using EZNEW.Data.Cache;
 
 namespace EZNEW.Develop.CQuery
 {
@@ -283,7 +285,7 @@ namespace EZNEW.Develop.CQuery
         /// <param name="value">Value</param>
         /// <param name="converter">Converter</param>
         /// <param name="queryOption">query parameter option</param>
-        public IQuery AddCriteria(QueryOperator queryOperator, string fieldName, CriteriaOperator criteriaOperator, dynamic value, ICriteriaConverter converter = null, QueryParameterOption queryOption = null)
+        public IQuery AddCriteria(QueryOperator queryOperator, string fieldName, CriteriaOperator criteriaOperator, dynamic value, ICriteriaConverter converter = null, QueryParameterOptions queryOption = null)
         {
             if (string.IsNullOrWhiteSpace(fieldName))
             {
@@ -300,12 +302,12 @@ namespace EZNEW.Develop.CQuery
         /// <param name="queryOperator">Connect operator</param>
         /// <param name="queryItem">query item</param>
         /// <param name="queryOption">query parameter option</param>
-        public IQuery AddQueryItem(QueryOperator queryOperator, IQueryItem queryItem, QueryParameterOption queryOption = null)
+        public IQuery AddQueryItem(QueryOperator queryOperator, IQueryItem queryItem, QueryParameterOptions queryOption = null)
         {
             #region invoke handler
 
             var queryItemTypeId = queryItem?.GetType().GUID ?? Guid.Empty;
-            Func<DefaultQuery, IQueryItem, QueryParameterOption, IQueryItem> handler = null;
+            Func<DefaultQuery, IQueryItem, QueryParameterOptions, IQueryItem> handler = null;
             QueryManager.AddQueryItemHandlers?.TryGetValue(queryItemTypeId, out handler);
             if (handler != null)
             {
@@ -555,7 +557,7 @@ namespace EZNEW.Develop.CQuery
         /// Set load data propertys
         /// </summary>
         /// <param name="properties">Allow load data properties</param>
-        public void SetLoadPropertys(Dictionary<string, bool> properties)
+        public void SetLoadProperty(Dictionary<string, bool> properties)
         {
             if (properties == null)
             {
@@ -573,7 +575,7 @@ namespace EZNEW.Develop.CQuery
         /// <typeparam name="T">Data Type</typeparam>
         /// <param name="allowLoad">allow load</param>
         /// <param name="properties">properties</param>
-        public void SetLoadPropertys<T>(bool allowLoad, params Expression<Func<T, dynamic>>[] properties)
+        public void SetLoadProperty<T>(bool allowLoad, params Expression<Func<T, dynamic>>[] properties)
         {
             if (properties == null)
             {
@@ -584,7 +586,7 @@ namespace EZNEW.Develop.CQuery
             {
                 loadPropertyValues.Add(ExpressionHelper.GetExpressionPropertyName(property.Body), allowLoad);
             }
-            SetLoadPropertys(loadPropertyValues);
+            SetLoadProperty(loadPropertyValues);
         }
 
         /// <summary>
